@@ -199,7 +199,7 @@ class TodoItem extends React.Component {
         return this.state.editable ? this.renderEditMode() : this.renderViewMode();
     }
     renderViewMode() {
-        const { title, completed, onDelete, onToggle } = this.props;
+        const { title, completed, onToggle } = this.props;
         return (
             <List isFadingOut={this.state.isFadingOut} isFirstRender={this.isFirstRender} level={this.state.level}>
                 <CustomizeCheckbox>

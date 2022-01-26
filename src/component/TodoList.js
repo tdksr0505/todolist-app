@@ -1,6 +1,6 @@
 import TodoItem from './TodoItem';
 import React from 'react';
-import styled, { keyframes, css } from 'styled-components';
+import styled from 'styled-components';
 const ListArea = styled.div`
     background-color: #96c0fd;
     padding: 40px 30px;
