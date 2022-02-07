@@ -1,27 +1,21 @@
 import styled, { css } from 'styled-components';
 import { useState, useEffect } from 'react';
-import LevelConfig from '../config/LevelConfig';
+import { LevelConfig, LevelColor } from '../config/LevelConfig';
 
-const circle = styled.div`
+const CircleIcon = styled.div`
     width: 20px;
     height: 20px;
     border-radius: 50%;
     cursor: pointer;
     display: inline-block;
     vertical-align: top;
+    background-color: ${(prop) => prop.bgColor};
+
     & + & {
         margin-left: 10px;
     }
 `;
-const RedIcon = styled(circle)`
-    background-color: red;
-`;
-const OrangeIcon = styled(circle)`
-    background-color: orange;
-`;
-const GreenIcon = styled(circle)`
-    background-color: green;
-`;
+
 const Tab = styled.div`
     width: 80px;
     position: absolute;
@@ -30,7 +24,7 @@ const Tab = styled.div`
     background-color: #fff;
     border-radius: 30px;
     padding: 5px 10px;
-    border: 2px solid #0072ff;
+    border: 2px solid ${(prop) => prop.theme.checkColor};
     display: none;
 
     ${({ active }) =>
@@ -49,26 +43,29 @@ const Tab = styled.div`
         height: 0;
         border-style: solid;
         border-width: 6px 6px 0 6px;
-        border-color: #0072ff transparent transparent transparent;
+        border-color: ${(prop) => prop.theme.checkColor} transparent transparent transparent;
     }
 `;
 const LevelTab = (prop) => {
     const { setLevel, toggleLevelTab, isTabOpen } = prop;
     return (
         <Tab active={isTabOpen}>
-            <RedIcon
+            <CircleIcon
+                bgColor={LevelColor.LEVEL_3}
                 onClick={() => {
                     setLevel(LevelConfig.LEVEL_3);
                     toggleLevelTab();
                 }}
             />
-            <OrangeIcon
+            <CircleIcon
+                bgColor={LevelColor.LEVEL_2}
                 onClick={() => {
                     setLevel(LevelConfig.LEVEL_2);
                     toggleLevelTab();
                 }}
             />
-            <GreenIcon
+            <CircleIcon
+                bgColor={LevelColor.LEVEL_1}
                 onClick={() => {
                     setLevel(LevelConfig.LEVEL_1);
                     toggleLevelTab();

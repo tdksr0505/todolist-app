@@ -3,8 +3,9 @@ import styled from 'styled-components';
 const StyledInput = styled.input`
     width: 100%;
     border-radius: 5px;
-    border: 1px solid #80ceff;
+    border: 1px solid ${(prop) => prop.theme.btnColor};
     height: 30px;
+    outline: none;
 `;
 class InputField extends React.Component {
     constructor() {

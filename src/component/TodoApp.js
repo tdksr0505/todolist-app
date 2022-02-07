@@ -1,16 +1,19 @@
 import Header from './Header';
 import InputField from './InputField';
 import TodoList from './TodoList';
-import { useState } from 'react';
+import Counter from './Counter';
+import PersonDataArea from './PersonDataArea';
+import ThemeArea from './ThemeArea';
 import React from 'react';
-import styled from 'styled-components';
+import styled, { ThemeProvider } from 'styled-components';
+import themeConfig from '../config/themeConfig';
 const SubmitArea = styled.div`
     margin-bottom: 20px;
     text-align: center;
     input {
         height: 30px;
         border-radius: 10px;
-        border: 2px solid #0072ff;
+        border-width: 2px;
         width: 98%;
         font-size: 20px;
         padding: 5px;
@@ -20,6 +23,8 @@ const Container = styled.div`
     width: 800px;
     display: block;
     margin: auto;
+    overflow-x: scroll;
+    padding: 30px;
 `;
 class TodoApp extends React.Component {
     constructor() {
@@ -27,45 +32,57 @@ class TodoApp extends React.Component {
         const todos = this._createTodoList();
         this.state = {
             todos: todos,
+            currentTheme: themeConfig.blueTheme,
         };
     }
 
     render() {
-        const { todos } = this.state;
-
+        const { todos, currentTheme } = this.state;
+        console.log(currentTheme);
         return (
-            <Container>
-                <Header appName="Todo List" todosCnt={todos.filter((todo) => !todo.completed).length} />
-                <SubmitArea>
-                    <InputField
-                        placeholder="輸入代辦清單"
-                        inputType="create"
-                        onSubmitTodo={(title) =>
+            <ThemeProvider theme={currentTheme}>
+                <Container>
+                    {/* <Counter />
+                    <PersonDataArea /> */}
+                    <ThemeArea
+                        onChangeTheme={(newTheme) => {
                             this.setState({
-                                todos: this._createTodo(todos, title),
+                                currentTheme: newTheme,
+                            });
+                        }}
+                    />
+                    <Header appName="Todo List" todosCnt={todos.filter((todo) => !todo.completed).length} />
+                    <SubmitArea>
+                        <InputField
+                            placeholder="輸入代辦清單"
+                            inputType="create"
+                            onSubmitTodo={(title) =>
+                                this.setState({
+                                    todos: this._createTodo(todos, title),
+                                })
+                            }
+                        />
+                    </SubmitArea>
+                    <TodoList
+                        todos={todos}
+                        onUpdateTodo={(id, title) =>
+                            this.setState({
+                                todos: this._updateTodo(todos, id, title),
+                            })
+                        }
+                        onToggleTodo={(id) =>
+                            this.setState({
+                                todos: this._toggleTodo(todos, id),
+                            })
+                        }
+                        onDeleteTodo={(id) =>
+                            this.setState({
+                                todos: this._deleteTodo(todos, id),
                             })
                         }
                     />
-                </SubmitArea>
-                <TodoList
-                    todos={todos}
-                    onUpdateTodo={(id, title) =>
-                        this.setState({
-                            todos: this._updateTodo(todos, id, title),
-                        })
-                    }
-                    onToggleTodo={(id) =>
-                        this.setState({
-                            todos: this._toggleTodo(todos, id),
-                        })
-                    }
-                    onDeleteTodo={(id) =>
-                        this.setState({
-                            todos: this._deleteTodo(todos, id),
-                        })
-                    }
-                />
-            </Container>
+                </Container>
+            </ThemeProvider>
         );
     }
     _createTodoList() {

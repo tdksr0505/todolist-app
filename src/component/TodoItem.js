@@ -1,7 +1,7 @@
 import React from 'react';
 import InputField from './InputField';
 import LevelTab from './LevelTab';
-import LevelConfig from '../config/LevelConfig';
+import { LevelConfig, LevelColor } from '../config/LevelConfig';
 import styled, { keyframes, css } from 'styled-components';
 
 const BtnArea = styled.div`
@@ -46,8 +46,8 @@ const CheckboxBtn = styled.span`
         top: 0px;
         left: 0px;
         border: none;
-        border-left: solid 3px #0072ff;
-        border-bottom: solid 3px #0072ff;
+        border-left: solid 3px ${(prop) => prop.theme.checkColor};
+        border-bottom: solid 3px ${(prop) => prop.theme.checkColor};
         width: 22px;
         height: 10px;
         transform: rotate(-45deg) scale(0);
@@ -72,7 +72,7 @@ const CustomizeCheckbox = styled.label`
             }
         }
         &:checked ~ ${CheckboxBtn} {
-            border-color: #7a9fd5;
+            border-color: ${(prop) => prop.theme.btnColor};
             &:before {
                 display: block;
                 animation: ${showCheck} 0.5s forwards;
@@ -80,13 +80,13 @@ const CustomizeCheckbox = styled.label`
         }
     }
     &:hover ${CheckboxBtn} {
-        border-color: #7a9fd5;
+        border-color: ${(prop) => prop.theme.btnColor};
     }
 `;
 
 const BaseBtn = styled.button`
     border: none;
-    background-color: #7a9fd5;
+    background-color: ${(prop) => prop.theme.btnColor};
     border-radius: 5px;
     padding: 4px 10px;
     font-size: 16px;
@@ -99,7 +99,7 @@ const BaseBtn = styled.button`
         margin-left: 10px;
     }
     &:hover {
-        background-color: #0072ff;
+        background-color: ${(prop) => prop.theme.checkColor};
     }
 `;
 const CloseBtn = styled(BaseBtn)`
@@ -136,21 +136,7 @@ const List = styled.div`
     }
     background-color: #fff;
     border: 3px #fff solid;
-    ${({ level }) =>
-        level === 1 &&
-        `
-        border-color:#fff;
-        `}
-    ${({ level }) =>
-        level === 2 &&
-        `
-        border-color:orange;
-        `}
-    ${({ level }) =>
-        level === 3 &&
-        `
-        border-color:red;
-        `}
+    border-color: ${(prop) => prop.borderColor};
     animation: ${(props) =>
         props.isFirstRender &&
         css`
@@ -170,7 +156,7 @@ const ListInputBox = styled.div`
     input {
         height: 15px;
         border-radius: 5px;
-        border: 2px solid #0072ff;
+        border: 2px solid ${(prop) => prop.theme.checkColor};
         width: calc(100% - 200px);
         font-size: 18px;
         padding: 5px;
@@ -201,7 +187,11 @@ class TodoItem extends React.Component {
     renderViewMode() {
         const { title, completed, onDelete, onToggle } = this.props;
         return (
-            <List isFadingOut={this.state.isFadingOut} isFirstRender={this.isFirstRender} level={this.state.level}>
+            <List
+                isFadingOut={this.state.isFadingOut}
+                isFirstRender={this.isFirstRender}
+                borderColor={this.getListBorderColor(this.state.level)}
+            >
                 <CustomizeCheckbox>
                     <input type="checkbox" checked={completed} onChange={() => onToggle && onToggle()} />
                     {title}
@@ -261,6 +251,25 @@ class TodoItem extends React.Component {
     componentDidMount() {
         this.isFirstRender = false;
         console.log('componentDidMount');
+    }
+
+    getListBorderColor(level) {
+        console.log(LevelColor);
+        console.log(level);
+
+        let borderColor = 'tranaprent';
+        switch (level) {
+            case LevelConfig.LEVEL_2:
+                borderColor = LevelColor.LEVEL_2;
+                break;
+            case LevelConfig.LEVEL_3:
+                borderColor = LevelColor.LEVEL_3;
+                break;
+            default:
+                break;
+        }
+        console.log(borderColor);
+        return borderColor;
     }
 }
 export default TodoItem;

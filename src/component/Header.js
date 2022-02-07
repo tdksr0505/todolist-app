@@ -6,7 +6,7 @@ const StyledHeader = styled.div`
     font-size: 40px;
     margin-bottom: 30px;
     padding-bottom: 8px;
-    color: #04329b;
+    color: ${(prop) => prop.theme.listBgColor};
     .note {
         font-size: 20px;
         color: red;

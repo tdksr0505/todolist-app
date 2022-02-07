@@ -2,10 +2,11 @@ import TodoItem from './TodoItem';
 import React from 'react';
 import styled, { keyframes, css } from 'styled-components';
 const ListArea = styled.div`
-    background-color: #96c0fd;
+    background-color: ${(props) => props.theme.listBgColor};
     padding: 40px 30px;
     border-radius: 20px;
-    max-height: calc(100vh - 300px);
+    height: 550px;
+    max-height: calc(100vh - 200px);
     overflow-y: scroll;
 `;
 
